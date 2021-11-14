@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { decode } from "html-entities";
 
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
+import {setAlert} from "../../redux/actions/alert";
 
-const Quiz = ({ data }) => {
+import { useDispatch } from "react-redux";
+import {Box} from "@mui/system";
+
+const Quiz = ({data}) => {
+  const dispatch = useDispatch()
   const [question, setQuestion] = useState("");
   const [qNo, setQNo] = useState(0);
   const [answer, setAnswer] = useState("")
@@ -15,11 +20,18 @@ const Quiz = ({ data }) => {
         setSubmit(true)
         if (answer === data[qNo].correct_answer) {
             setCorrect(true)
-            setScore(initial => initial + 1)
-        }
+          setScore(initial => initial + 1)
+          dispatch(setAlert("#98FB98"))
+      }
+        else {
+          dispatch(setAlert("#FF7F7F "))
+      }
     }
 
-    const nextQ = () => {setQNo((initial) => initial + 1);};
+  const nextQ = () => {
+    setQNo((initial) => initial + 1);
+    dispatch(setAlert(""))
+  };
     
   const handleSelect = (option) => {
         setAnswer(option)
@@ -34,44 +46,51 @@ const Quiz = ({ data }) => {
     <>
       {qNo !== 10 ? 
       <>
-      <h1>Question {qNo + 1}</h1>
-      <h1>Score : {score}</h1>
-      <h4>{submit ? (correct ? "Correct" : "Wrong") : ""}</h4>
-      <h1>{decode(data[qNo].question)}</h1>
-      <div >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <h3>Question {qNo + 1}</h3>
+        <h3>Score : {score}</h3>
+      </Box>
+      <h2>{decode(data[qNo].question)}</h2>
+      <Grid container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justifyContent="center">
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', my : 2}}>
           <Button variant = {answer !== options[0] ? "outlined" : "contained"} disabled = {submit ? true : false}  
                 sx={{
-                    display: "block", width: "20rem",p: 2, my: 2}}
-                    onClick = {() => handleSelect(options[0])}  item xs={8}>
-            {options[0]}
+                    width: "20rem",p: 2, my: 1}}
+                    onClick = {() => handleSelect(options[0])} >
+            {decode(options[0])}
           </Button>
           <Button variant = {answer !== options[1] ? "outlined" : "contained"} disabled = {submit ? true : false} 
                 sx={{
-                    display: "block", width: "20rem",p: 2, my: 2}}
+                    width: "20rem",p: 2, my: 1}}
                     onClick = {() => handleSelect(options[1])}>
-            {options[1]}
+            {decode(options[1])}
           </Button>
           <Button variant = {answer !== options[2] ? "outlined" : "contained"} disabled = {submit ? true : false} 
                 sx={{
-                    display: "block", width: "20rem",p: 2, my: 2}}
+                    width: "20rem",p: 2, my: 1}}
                     onClick = {() => handleSelect(options[2])}>
-            {options[2]}
+            {decode(options[2])}
           </Button>
           <Button variant = {answer !== options[3] ? "outlined" : "contained"} disabled = {submit ? true : false} 
                 sx={{
-                    display: "block", width: "20rem",p: 2, my: 2}}
+                    width: "20rem",p: 2, my: 1}}
                     onClick = {() => handleSelect(options[3])}>
-            {options[3]}
+            {decode(options[3])}
           </Button>
-      </div  >
-      <div>
-        <Button variant="outlined" color="success"  sx={{ width: "5rem", p: 1, mx: 2 }} disabled = {!answer ? true: false} onClick = {handleSubmit}>
+      </Box >
+      </Grid>
+      <Grid container justifyContent="flex-end" sx ={{my : 2}}>
+        <Button variant="contained" color="success"  sx={{ width: "5rem", p: 1, mx: 2 }} disabled = {!answer ? true: false} onClick = {handleSubmit}>
           Submit
         </Button>
-        <Button variant="outlined"  sx={{ width: "5rem", p: 1, mx: 2 }}  onClick={handleNext} disabled = {!submit ? true: false}  >
+        <Button variant="contained"  sx={{ width: "5rem", p: 1, mx: 2 }}  onClick={handleNext} disabled = {!submit ? true: false}  >
           Next
         </Button>
-      </div></> :
+      </Grid></> :
       <>
          <h1>Thank you for playing</h1>
          <h3>Your Score : {score}</h3>
