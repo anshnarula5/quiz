@@ -32,8 +32,11 @@ const Quiz = ({ data }) => {
     const options = [...data[qNo].incorrect_answers, data[qNo].correct_answer];
   return (
     <>
+      {qNo !== 10 ? 
+      <>
       <h1>Question {qNo + 1}</h1>
       <h1>Score : {score}</h1>
+      <h4>{submit ? (correct ? "Correct" : "Wrong") : ""}</h4>
       <h1>{decode(data[qNo].question)}</h1>
       <div >
           <Button variant = {answer !== options[0] ? "outlined" : "contained"} disabled = {submit ? true : false}  
@@ -68,7 +71,14 @@ const Quiz = ({ data }) => {
         <Button variant="outlined"  sx={{ width: "5rem", p: 1, mx: 2 }}  onClick={handleNext} disabled = {!submit ? true: false}  >
           Next
         </Button>
-      </div>
+      </div></> :
+      <>
+         <h1>Thank you for playing</h1>
+         <h3>Your Score : {score}</h3>
+         <Button variant="outlined"  sx={{ width: "10rem", p: 1, mx: 2 }}>
+          Play again
+        </Button>          
+      </>}
     </>
   );
 };

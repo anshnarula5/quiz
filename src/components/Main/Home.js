@@ -1,9 +1,10 @@
 import React from 'react'
+import LeaderBoard from './LeaderBoard'
 
 const Home = () => {
     return (
         <div>
-            Home
+            <LeaderBoard />
         </div>
     )
 }
