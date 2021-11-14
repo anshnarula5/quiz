@@ -24,7 +24,7 @@ const Quiz = ({data}) => {
           dispatch(setAlert("#98FB98"))
       }
         else {
-          dispatch(setAlert("#FF7F7F "))
+          dispatch(setAlert("#FFA29E "))
       }
     }
 
