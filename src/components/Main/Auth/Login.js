@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Paper, TextField, Typography, Button } from "@mui/material";
 import validator from "validator";
@@ -6,13 +6,14 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
+  onAuthStateChanged 
 } from "firebase/auth";
 import { auth } from "../../../firebase-config";
 import { useDispatch } from "react-redux";
 import {setPopUp} from "../../../redux/actions/alert";
+import {register} from "../../../redux/actions/auth";
 
 const Login = () => {
-  
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
   const [formData, setFormData] = useState({
@@ -43,10 +44,11 @@ const Login = () => {
         email,
         password
       );
-      console.log(result);
+
       await updateProfile(auth.currentUser, {
         displayName: name,
       });
+      dispatch(register({name : result.user.displayName, email : result.user.email}))
       dispatch(setPopUp(`Welcome, ${name}`, "success"));
     } catch (error) {
       dispatch(setPopUp(error.message, "error"));
@@ -64,21 +66,25 @@ const Login = () => {
     }
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-      dispatch(setPopUp(`Welcome, ${result.displayName}`, "success"));
+      console.log(result)
+      dispatch(register({name : result.user.displayName, email : result.user.email}))
+      dispatch(setPopUp(`Welcome, ${result.user.displayName}`, "success"));
     } catch (error) {
       dispatch(setPopUp(error.message, "error"));
       return;
     }
   };
-  // if (auth.currentUser) {
-  //   return <Navigate to = "/"/>
-  // }
+  
+  
+  if (auth.currentUser) {
+    return <Navigate to = "/"/>
+  }
   return (
     <div>
       <Paper
         sx={{
           width: { md: 400 },
-          mx: "auto",
+          mx: {md : "auto", xs : 1},
           mt: 5,
           display: "flex",
           flexDirection: "column",

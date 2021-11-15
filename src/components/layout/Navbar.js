@@ -5,11 +5,20 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { auth } from "../../firebase-config";
-import { signOut } from "firebase/auth";
+import {signOut} from "firebase/auth";
 import { Link } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setPopUp} from "../../redux/actions/alert";
+import { logout } from "../../redux/actions/auth";
 
 export default function Navbar() {
-  console.log(auth.currentUser);
+  const {user} = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+  const handleLogout = () => {
+    signOut(auth);
+    dispatch(logout())
+    dispatch(setPopUp("Logged Out", "success"))
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -17,8 +26,8 @@ export default function Navbar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/">Quizzer</Link>
           </Typography>
-          {auth.currentUser ? (
-            <Button color="inherit">
+          {user ? (
+            <Button color="inherit" onClick = {handleLogout}>
               Logout  
             </Button>
           ) : (

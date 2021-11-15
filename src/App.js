@@ -1,13 +1,28 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Login from "./components/Main/Auth/Login";
 import Home from "./components/Main/Home";
 import Main from "./components/Main/Main";
 import { Alert } from "@mui/material";
-import {useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
+import {getAuth, onAuthStateChanged} from "@firebase/auth";
+import {register} from "./redux/actions/auth";
+
 function App() {
   const popups = useSelector(state => state.popup)
+  const dispatch = useDispatch()
+  const auth = getAuth()
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+       dispatch(register({name : user.displayName, email : user.email}))
+      }
+      else {
+        console.log("no user")
+      }
+    });
+  }, [])
   return (
     <div className="App">
       <Navbar />

@@ -23,7 +23,7 @@ const Main = () => {
     fetchData();
   }, []);
   return (
-    <><Container>
+    <><Container >
         <Grid container sx={{ my: 2}} spacing = {2}>
           <Grid item md={8}>
           <Paper elevation={5} sx = {{px : {md : 4, sm : 2}, py : 2, backgroundColor : color , minHeight : 600 }} >

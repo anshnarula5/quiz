@@ -4,10 +4,11 @@ import { decode } from "html-entities";
 import { Button, Grid } from "@mui/material";
 import {setAlert} from "../../redux/actions/alert";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {Box} from "@mui/system";
 
 const Quiz = ({data}) => {
+  const user = useSelector(state => state.auth.user)
   const dispatch = useDispatch()
   const [question, setQuestion] = useState("");
   const [qNo, setQNo] = useState(0);
@@ -16,15 +17,18 @@ const Quiz = ({data}) => {
   const [score, setScore] = useState(0)
   const [correct, setCorrect] = useState(false)
   const options = [...data[qNo].incorrect_answers, data[qNo].correct_answer];
-function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
-}
+// function shuffle(array) {
+//   array.sort(() => Math.random() - 0.5);
+// }
   
     const handleSubmit = () => {
         setSubmit(true)
-        if (answer === data[qNo].correct_answer) {
-            setCorrect(true)
-          setScore(initial => initial + 1)
+      if (answer === data[qNo].correct_answer) {
+        setCorrect(true)
+        setScore(initial => initial + 1)
+        if (score > user.highscore) {
+          user.highscore = score + 1
+        }
           dispatch(setAlert("#98FB98"))
       }
         else {
@@ -51,7 +55,7 @@ function shuffle(array) {
     <>
       {qNo !== 10 ? 
       <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
         <h3>Question {qNo + 1}</h3>
         <h3>Score : {score}</h3>
       </Box>
