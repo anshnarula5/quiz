@@ -15,6 +15,10 @@ const Quiz = ({data}) => {
   const [submit, setSubmit] = useState(false)
   const [score, setScore] = useState(0)
   const [correct, setCorrect] = useState(false)
+  const options = [...data[qNo].incorrect_answers, data[qNo].correct_answer];
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
+}
   
     const handleSubmit = () => {
         setSubmit(true)
@@ -31,17 +35,18 @@ const Quiz = ({data}) => {
   const nextQ = () => {
     setQNo((initial) => initial + 1);
     dispatch(setAlert(""))
+    
   };
     
   const handleSelect = (option) => {
         setAnswer(option)
     }
-    const handleNext = () => {
+  const handleNext = () => {
         nextQ()
         setAnswer("")
-       setSubmit(false)
+      setSubmit(false)
     }
-    const options = [...data[qNo].incorrect_answers, data[qNo].correct_answer];
+  
   return (
     <>
       {qNo !== 10 ? 
