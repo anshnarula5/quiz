@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import {Paper, TextField, Typography, Button} from "@mui/material";
+import { Navigate } from "react-router-dom";
+import { Paper, TextField, Typography, Button } from "@mui/material";
+import validator from "validator";
 import {
   createUserWithEmailAndPassword,
+  updateProfile,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
 } from "firebase/auth";
 import { auth } from "../../../firebase-config";
+import { useDispatch } from "react-redux";
+import {setPopUp} from "../../../redux/actions/alert";
 
 const Login = () => {
+  
+  const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -22,38 +27,52 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const register = async () => {
+  const handleRegister = async () => {
+    if (!validator.isEmail(email) || password.length < 6 || name.length === 0) {
+      dispatch(
+        setPopUp(
+          "Enter Valid Credentials (Password length must be atleast 6)",
+          "error"
+        )
+      );
+      return;
+    }
     try {
-      const user = await createUserWithEmailAndPassword(
+      const result = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      user.updateProfile({
-        displayName: name
-      })
-      console.log(user);
+      console.log(result);
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+      dispatch(setPopUp(`Welcome, ${name}`, "success"));
     } catch (error) {
-      console.log(error.message);
+      dispatch(setPopUp(error.message, "error"));
     }
   };
-
-  const login = async () => {
-    try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
+  const handleLogin = async () => {
+    if (!validator.isEmail(email) || password.length < 6) {
+      dispatch(
+        setPopUp(
+          "Enter Valid Credentials (Password length must be atleast 6)",
+          "error"
+        )
       );
-      console.log(user);
+      return;
+    }
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      dispatch(setPopUp(`Welcome, ${result.displayName}`, "success"));
     } catch (error) {
-      console.log(error.message);
+      dispatch(setPopUp(error.message, "error"));
+      return;
     }
   };
-
-  const logout = async () => {
-    await signOut(auth);
-  };
+  // if (auth.currentUser) {
+  //   return <Navigate to = "/"/>
+  // }
   return (
     <div>
       <Paper
@@ -108,7 +127,15 @@ const Login = () => {
             {!toggle ? "Sign Up" : "Login"}
           </Button>
         </Typography>
-        <Button onClick = {register}>Login</Button>
+        {toggle ? (
+          <Button variant="contained" onClick={handleRegister} sx={{ my: 3 }}>
+            Register
+          </Button>
+        ) : (
+          <Button variant="contained" onClick={handleLogin} sx={{ my: 3 }}>
+            Login
+          </Button>
+        )}
       </Paper>
     </div>
   );
