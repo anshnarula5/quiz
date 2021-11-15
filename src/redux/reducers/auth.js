@@ -1,4 +1,4 @@
-const initialState = {users : [], user : {}}
+const initialState = {users : [], user : null}
 
 
 const auth = (state = initialState, action) => {

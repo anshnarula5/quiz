@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import { getAuth } from '@firebase/auth';
+
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
@@ -20,6 +22,7 @@ const rows = [
 ];
 
 export default function LeaderBoard() {
+  const auth = getAuth()
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">

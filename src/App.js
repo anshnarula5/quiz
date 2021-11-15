@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-       dispatch(register({name : user.displayName, email : user.email}))
+       dispatch(register({name : user.displayName, email : user.email, highscore : user.phoneNumber}))
       }
       else {
         console.log("no user")

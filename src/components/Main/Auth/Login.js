@@ -8,7 +8,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged 
 } from "firebase/auth";
-import { auth } from "../../../firebase-config";
+import { auth, writeUserData } from "../../../firebase-config";
 import { useDispatch } from "react-redux";
 import {setPopUp} from "../../../redux/actions/alert";
 import {register} from "../../../redux/actions/auth";
