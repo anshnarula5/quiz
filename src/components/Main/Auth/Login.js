@@ -10,7 +10,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { addUser, auth} from "../../../firebase-config";
+import { addUser, auth, updateHs} from "../../../firebase-config";
 import { useDispatch } from "react-redux";
 import { setPopUp } from "../../../redux/actions/alert";
 import {register} from "../../../redux/actions/auth";
@@ -58,7 +58,7 @@ const Login = () => {
         email,
         password
       );
-
+        
       await updateProfile(auth.currentUser, {
         displayName: name,
       });

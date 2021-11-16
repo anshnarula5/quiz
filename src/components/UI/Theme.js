@@ -1,10 +1,12 @@
 import React from 'react'
 import {createTheme, ThemeProvider} from '@mui/material';
+import {useSelector} from 'react-redux';
 
 const Theme = ({children}) => {
+  const toggle = useSelector(state => state.toggle)
     const darkTheme = createTheme({
         palette: {
-          mode: 'dark',
+          mode: toggle ? "dark" : "light",
         },
       });
     return (

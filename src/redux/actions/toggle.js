@@ -1,3 +1,3 @@
-export const toggle = () => dispatch => {
+export const set_toggle = () => dispatch => {
     dispatch({type : "TOGGLE", payload : null})
 }

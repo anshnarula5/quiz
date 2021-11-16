@@ -8,29 +8,51 @@ import { Alert, Paper, ThemeProvider, createTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { register } from "./redux/actions/auth";
+import { doc, getDoc } from "@firebase/firestore";
+import { db } from "./firebase-config";
 
 function App() {
   const popups = useSelector((state) => state.popup);
   const dispatch = useDispatch();
+  const toggle = useSelector((state) => state.toggle);
   const auth = getAuth();
+  const getData = async (name) => {
+    try {
+      const docRef = doc(db, "users", name);
+      const docSnap = await getDoc(docRef);
+      console.log(docSnap);
+      dispatch(
+        register({
+          name: name,
+          highscore: docSnap?.data()?.hs || 0,
+        })
+      );
+    } catch {
+      dispatch(
+        register({
+          name: name,
+          highscore: 0,
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(
-          register({
-            name: user.displayName,
-            email: user.email,
-            highscore: user.phoneNumber,
-          })
-        );
+        getData(user.displayName);
       } else {
-        console.log("no user");
+        console.log("");
       }
     });
   }, []);
   return (
-    <Paper className="App">
+    <Paper
+      className="App"
+      style={{
+        backgroundColor: toggle ? "rgba(0, 0, 0, 0.6)" : "rgba(0, 0, 0, 0.02)",
+      }}
+    >
       <Navbar />
       {popups !== null &&
         popups.length !== 0 &&

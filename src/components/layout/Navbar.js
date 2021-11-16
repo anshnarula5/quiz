@@ -12,15 +12,16 @@ import { setPopUp } from "../../redux/actions/alert";
 import { logout } from "../../redux/actions/auth";
 import Theme from "../UI/Theme";
 import DarkModeToggle from "react-dark-mode-toggle";
-import {toggle} from "../../redux/actions/toggle";
+import PersonIcon from '@mui/icons-material/Person';
+import { set_toggle } from "../../redux/actions/toggle";
 
 export default function Navbar() {
-  const {user} = useSelector((state) => state.auth);
-  const toggle = useSelector(state => state.toggle)
+  const { user } = useSelector((state) => state.auth);
+  const toggle = useSelector((state) => state.toggle);
   const dispatch = useDispatch();
   const handleChange = () => {
-    dispatch(toggle())
-  }
+    dispatch(set_toggle());
+  };
   const handleLogout = () => {
     signOut(auth);
     dispatch(logout());
@@ -31,25 +32,36 @@ export default function Navbar() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, mx: { md: 10 } }}
+            >
               <Link to="/">Quizzer</Link>
             </Typography>
-            <Button color="inherit">
+            <Button color="inherit" sx={{ mx: 5 }}>
               <Link to="/main">Play Quiz</Link>
             </Button>
             {user ? (
-              <Button color="inherit" onClick={handleLogout}>
-                Logout
-              </Button>
+              <>
+                <Button color="inherit" sx={{ mr: 5 }}>
+                  <PersonIcon /> <Typography sx = {{ml : 1}}>{user.name}</Typography>
+                </Button>
+                <Button color="inherit" onClick={handleLogout} sx={{ mr: 5 }}>
+                  Logout
+                </Button>
+              </>
             ) : (
-              <Button color="inherit">
-                <Link to="/login">Register / Login</Link>
-              </Button>
+              <Link to="/login">
+                <Button color="inherit" sx={{ mr: 5 }}>
+                  Register / Login
+                </Button>
+              </Link>
             )}
             <DarkModeToggle
               checked={toggle}
               size={60}
-              onChange = {handleChange}
+              onChange={handleChange}
             />
           </Toolbar>
         </AppBar>

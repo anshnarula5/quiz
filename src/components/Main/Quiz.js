@@ -10,6 +10,7 @@ import { Navigate } from "react-router";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
 import {updateHs} from "../../firebase-config";
+import {register} from "../../redux/actions/auth";
 
 const Quiz = ({ data }) => {
   const user = useSelector((state) => state.auth.user);
@@ -31,8 +32,8 @@ const Quiz = ({ data }) => {
       setCorrect(true);
       setScore((initial) => initial + 1);
       if (score > user.highscore) {
-        updateHs(user.name, score+ 1)
-        user.highscore = score + 1;
+        updateHs(user.name, score + 1)
+        dispatch(register({name : user.name, highscore : score}))
       }
       dispatch(setAlert("#98FB98"));
     } else {
@@ -168,9 +169,6 @@ const Quiz = ({ data }) => {
             </Typography>
             <Typography variant="h3" sx={{ my: 5 }}>
               Your Score : {score}
-            </Typography>
-            <Typography variant="h3" sx={{ my: 5 }}>
-              Your Highscore : {user.highscore}
             </Typography>
             <Button variant="outlined" sx={{ width: "10rem", p: 1, mx: 2 }}>
               Play again
