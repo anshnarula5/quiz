@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { decode } from "html-entities";
 
 import { Button, Container, Grid, Paper, Typography } from "@mui/material";
@@ -6,14 +6,13 @@ import { setAlert } from "../../redux/actions/alert";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/system";
-import { Navigate } from "react-router";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Link } from "react-router-dom";
-import {updateHs} from "../../firebase-config";
-import {register} from "../../redux/actions/auth";
+import { updateHs, db } from "../../firebase-config";
+import { register } from "../../redux/actions/auth";
+import {doc, getDoc} from "@firebase/firestore";
 
 const Quiz = ({ data }) => {
   const user = useSelector((state) => state.auth.user);
+  const toggle = useSelector((state) => state.toggle);
   const dispatch = useDispatch();
   const [question, setQuestion] = useState("");
   const [qNo, setQNo] = useState(0);
@@ -22,22 +21,35 @@ const Quiz = ({ data }) => {
   const [score, setScore] = useState(0);
   const [correct, setCorrect] = useState(false);
   const options = [...data[qNo].incorrect_answers, data[qNo].correct_answer];
-  // function shuffle(array) {
-  //   array.sort(() => Math.random() - 0.5);
-  // }
-
-  const handleSubmit = () => {
+  function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+  }
+  const getHs = async (name) => {
+    const docRef = doc(db, "users", name);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data().hs
+    } else {
+      console.log("No such document!");
+    }
+  };
+  const updateHighscore = async () => {
+    const highScore = await getHs(user.name)
+    if (score > highScore) {
+      await updateHs(user.name, score + 1);
+      dispatch(register({ name: user.name, highscore: score }));
+    }
+  }
+  const handleSubmit =  () => {
     setSubmit(true);
+    setAnswer(false);
     if (answer === data[qNo].correct_answer) {
       setCorrect(true);
       setScore((initial) => initial + 1);
-      if (score > user.highscore) {
-        updateHs(user.name, score + 1)
-        dispatch(register({name : user.name, highscore : score}))
-      }
-      dispatch(setAlert("#98FB98"));
+      updateHighscore()  
+      dispatch(setAlert(!toggle ? "#50C878" : "#50C878 "));
     } else {
-      dispatch(setAlert("#FFA29E "));
+      dispatch(setAlert(!toggle ? "#EE4B2B" : "#EE4B2B"));
     }
   };
 
@@ -54,12 +66,9 @@ const Quiz = ({ data }) => {
     setAnswer("");
     setSubmit(false);
   };
-
   
-
   return (
     <>
-      
       {qNo !== 10 ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
