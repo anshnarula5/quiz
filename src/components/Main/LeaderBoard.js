@@ -12,7 +12,7 @@ import {collection, getDocs} from '@firebase/firestore';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetch_users} from '../../redux/actions/auth';
 import {Box} from '@mui/system';
-import {CircularProgress} from "@mui/material/CircularProgress"
+import CircularProgress from "@mui/material/CircularProgress"
 
 export default function LeaderBoard() {
   const dispatch = useDispatch()
@@ -29,7 +29,7 @@ export default function LeaderBoard() {
   React.useEffect(() => {
     getData()
   }, [])
-  users = users.sort(user => user.hs)
+  users = users.sort((a, b) => b.hs - a.hs)
   if (loading) {
     return <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', mt : 25 }}>
     <CircularProgress />

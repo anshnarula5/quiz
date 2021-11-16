@@ -26,18 +26,19 @@ export default function Navbar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/">Quizzer</Link>
           </Typography>
+          <Button color="inherit">
+            <Link to="/main">Play Quiz</Link>
+          </Button>
           {user ? (
             <Button color="inherit" onClick = {handleLogout}>
               Logout  
             </Button>
           ) : (
             <Button color="inherit">
-              <Link to="/login">Auth</Link>
+              <Link to="/login">Register / Login</Link>
             </Button>
           )}
-          <Button color="inherit">
-            <Link to="/main">Quiz Page</Link>
-          </Button>
+          
         </Toolbar>
       </AppBar>
     </Box>
