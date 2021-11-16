@@ -9,6 +9,7 @@ import { Box } from "@mui/system";
 import { Navigate } from "react-router";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
+import {updateHs} from "../../firebase-config";
 
 const Quiz = ({ data }) => {
   const user = useSelector((state) => state.auth.user);
@@ -30,6 +31,7 @@ const Quiz = ({ data }) => {
       setCorrect(true);
       setScore((initial) => initial + 1);
       if (score > user.highscore) {
+        updateHs(user.name, score+ 1)
         user.highscore = score + 1;
       }
       dispatch(setAlert("#98FB98"));

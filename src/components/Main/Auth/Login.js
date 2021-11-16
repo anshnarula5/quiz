@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Paper, TextField, Typography, Button } from "@mui/material";
 import validator from "validator";
-import GoogleIcon from '@mui/icons-material/Google';
+import GoogleIcon from "@mui/icons-material/Google";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider 
+  GoogleAuthProvider,
 } from "firebase/auth";
-import { auth, writeUserData } from "../../../firebase-config";
+import { addUser, auth} from "../../../firebase-config";
 import { useDispatch } from "react-redux";
-import {setPopUp} from "../../../redux/actions/alert";
+import { setPopUp } from "../../../redux/actions/alert";
 import {register} from "../../../redux/actions/auth";
 
 const Login = () => {
@@ -23,16 +23,18 @@ const Login = () => {
     password: "",
     name: "",
   });
-  const {email, password, name} = formData;
-  const googleProvider = new GoogleAuthProvider()
+  const { email, password, name } = formData;
+  const googleProvider = new GoogleAuthProvider();
   const handleGoogleAuth = () => {
     signInWithPopup(auth, googleProvider)
-      .then(result => {
-        dispatch(register({name : result.user.displayName, email : result.user.email}))
+      .then((result) => {
+        dispatch(
+          register({ name: result.user.displayName, email: result.user.email })
+        );
         dispatch(setPopUp(`Welcome, ${result.user.displayName}`, "success"));
-    })
-    .catch(err => console.log(err))
-  }
+      })
+      .catch((err) => console.log(err));
+  };
   const handleToggle = () => {
     setToggle((inital) => !inital);
   };
@@ -59,7 +61,9 @@ const Login = () => {
       await updateProfile(auth.currentUser, {
         displayName: name,
       });
-      dispatch(register({name : result.user.displayName, email : result.user.email}))
+      dispatch(
+        register({ name: result.user.displayName, email: result.user.email })
+      );
       dispatch(setPopUp(`Welcome, ${name}`, "success"));
     } catch (error) {
       dispatch(setPopUp(error.message, "error"));
@@ -77,25 +81,26 @@ const Login = () => {
     }
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-      console.log(result)
-      dispatch(register({name : result.user.displayName, email : result.user.email}))
+      console.log(result);
+      dispatch(
+        register({ name: result.user.displayName, email: result.user.email })
+      );
       dispatch(setPopUp(`Welcome, ${result.user.displayName}`, "success"));
     } catch (error) {
       dispatch(setPopUp(error.message, "error"));
       return;
     }
   };
-  
-  
+
   if (auth.currentUser) {
-    return <Navigate to = "/"/>
+    return <Navigate to="/" />;
   }
   return (
     <div>
       <Paper
         sx={{
           width: { md: 400 },
-          mx: {md : "auto", xs : 1},
+          mx: { md: "auto", xs: 1 },
           mt: 5,
           display: "flex",
           flexDirection: "column",
@@ -153,9 +158,10 @@ const Login = () => {
             Login
           </Button>
         )}
-        
-        <Button variant="contained" onClick={handleGoogleAuth} sx={{ mb: 3}}>
-        <GoogleIcon />  <Typography sx = {{mx : 2}}> Sign in with Google</Typography>
+
+        <Button variant="contained" onClick={handleGoogleAuth} sx={{ mb: 3 }}>
+          <GoogleIcon />{" "}
+          <Typography sx={{ mx: 2 }}> Sign in with Google</Typography>
         </Button>
       </Paper>
     </div>

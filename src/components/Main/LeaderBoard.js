@@ -8,6 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import { getAuth } from '@firebase/auth';
+import {db, getData} from '../../firebase-config';
+import {collection, getDocs} from '@firebase/firestore';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -23,6 +25,17 @@ const rows = [
 
 export default function LeaderBoard() {
   const auth = getAuth()
+  const getData = async () => {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    let users = []
+    querySnapshot.forEach((doc) => {
+      users.push({name : doc.id, hs : doc.data().hs })
+    });
+    console.log(users)
+  };
+  React.useEffect(() => {
+    getData()
+  }, [])
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
