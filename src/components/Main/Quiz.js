@@ -58,6 +58,7 @@ const Quiz = ({ data }) => {
 
   return (
     <>
+      
       {qNo !== 10 ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>

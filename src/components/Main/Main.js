@@ -13,6 +13,7 @@ import { Navigate } from "react-router";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Theme from "../UI/Theme";
 
 const Main = () => {
   const color = useSelector(state => state.alert.payload)
@@ -27,8 +28,11 @@ const Main = () => {
     console.log(user)
     fetchData();
   }, []);
+  
   return (
-    <><Container >
+    <>
+    <Theme>
+      <Container >
         <Grid container sx={{ my: 2}} spacing = {2}>
           <Grid item md={8}>
           <Paper elevation={5} sx = {{px : {md : 4, sm : 2}, py : 2, backgroundColor : color , minHeight : 600 }} >
@@ -70,7 +74,8 @@ const Main = () => {
             <LeaderBoard />
           </Grid>
       </Grid>
-      </Container>
+        </Container>
+        </Theme>
     </>
   );
 };

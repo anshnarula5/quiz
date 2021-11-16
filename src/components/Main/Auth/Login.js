@@ -14,6 +14,7 @@ import { addUser, auth} from "../../../firebase-config";
 import { useDispatch } from "react-redux";
 import { setPopUp } from "../../../redux/actions/alert";
 import {register} from "../../../redux/actions/auth";
+import Theme from "../../UI/Theme";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -96,7 +97,7 @@ const Login = () => {
     return <Navigate to="/" />;
   }
   return (
-    <div>
+    <Theme>
       <Paper
         sx={{
           width: { md: 400 },
@@ -164,7 +165,7 @@ const Login = () => {
           <Typography sx={{ mx: 2 }}> Sign in with Google</Typography>
         </Button>
       </Paper>
-    </div>
+    </Theme>
   );
 };
 
