@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 
 const Main = () => {
   const color = useSelector(state => state.alert.payload)
-  const user = useSelector((state) => state.auth.user);
+  const {user, loading} = useSelector((state) => state.auth);
   const [quizData, setQuizData] = useState([]);
   const fetchData = () => {
     fetch("https://opentdb.com/api.php?amount=11&type=multiple")
@@ -24,6 +24,7 @@ const Main = () => {
       .then((data) => setQuizData(data));
   };
   useEffect(() => {
+    console.log(user)
     fetchData();
   }, []);
   return (
@@ -37,7 +38,7 @@ const Main = () => {
                   </Box>
             )}
              {
-                !user && 
+                !loading && !user &&  
                   <Container
                     sx={{
                       mx: { md: "auto", xs: 1 },

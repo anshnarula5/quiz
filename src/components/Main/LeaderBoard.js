@@ -7,54 +7,53 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-import { getAuth } from '@firebase/auth';
 import {db, getData} from '../../firebase-config';
 import {collection, getDocs} from '@firebase/firestore';
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+import {useDispatch, useSelector} from 'react-redux';
+import {fetch_users} from '../../redux/actions/auth';
+import {Box} from '@mui/system';
+import {CircularProgress} from "@mui/material/CircularProgress"
 
 export default function LeaderBoard() {
-  const auth = getAuth()
+  const dispatch = useDispatch()
+  let {users, loading} = useSelector(state => state.auth)
   const getData = async () => {
     const querySnapshot = await getDocs(collection(db, "users"));
     let users = []
     querySnapshot.forEach((doc) => {
       users.push({name : doc.id, hs : doc.data().hs })
     });
-    console.log(users)
+    dispatch(fetch_users(users))
+    
   };
   React.useEffect(() => {
     getData()
   }, [])
+  users = users.sort(user => user.hs)
+  if (loading) {
+    return <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', mt : 25 }}>
+    <CircularProgress />
+  </Box>
+  }
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell align="right">High Score</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {users.map((user) => (
             <TableRow
-              key={row.name}
+              key={user.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {user.name}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
+              <TableCell align="right">{user.hs}</TableCell>
             </TableRow>
           ))}
         </TableBody>
