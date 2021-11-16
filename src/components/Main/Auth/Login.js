@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Paper, TextField, Typography, Button } from "@mui/material";
 import validator from "validator";
+import GoogleIcon from '@mui/icons-material/Google';
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
-  onAuthStateChanged 
+  signInWithPopup,
+  GoogleAuthProvider 
 } from "firebase/auth";
 import { auth, writeUserData } from "../../../firebase-config";
 import { useDispatch } from "react-redux";
@@ -21,7 +23,16 @@ const Login = () => {
     password: "",
     name: "",
   });
-  const { email, password, name } = formData;
+  const {email, password, name} = formData;
+  const googleProvider = new GoogleAuthProvider()
+  const handleGoogleAuth = () => {
+    signInWithPopup(auth, googleProvider)
+      .then(result => {
+        dispatch(register({name : result.user.displayName, email : result.user.email}))
+        dispatch(setPopUp(`Welcome, ${result.user.displayName}`, "success"));
+    })
+    .catch(err => console.log(err))
+  }
   const handleToggle = () => {
     setToggle((inital) => !inital);
   };
@@ -142,6 +153,10 @@ const Login = () => {
             Login
           </Button>
         )}
+        
+        <Button variant="contained" onClick={handleGoogleAuth} sx={{ mb: 3}}>
+        <GoogleIcon />  <Typography sx = {{mx : 2}}> Sign in with Google</Typography>
+        </Button>
       </Paper>
     </div>
   );
