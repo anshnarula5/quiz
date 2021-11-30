@@ -46,7 +46,7 @@ function App() {
         console.log("");
       }
     });
-  }, [ auth]);
+  }, [ auth, dispatch]);
   return (
     <Paper
       className="App"

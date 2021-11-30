@@ -29,7 +29,7 @@ export default function LeaderBoard() {
       dispatch(fetch_users(users));
     };
     getData();
-  }, []);
+  }, [dispatch]);
   users = users.sort((a, b) => b.hs - a.hs);
   if (loading) {
     return (
