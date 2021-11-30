@@ -18,17 +18,18 @@ import Theme from "../UI/Theme";
 export default function LeaderBoard() {
   const dispatch = useDispatch();
   let { users, loading } = useSelector((state) => state.auth);
-  const getData = async () => {
-    const querySnapshot = await getDocs(collection(db, "users"));
-    let users = [];
-    querySnapshot.forEach((doc) => {
-      users.push({ name: doc.id, hs: doc.data().hs });
-    });
-    dispatch(fetch_users(users));
-  };
+  
   React.useEffect(() => {
+    const getData = async () => {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      let users = [];
+      querySnapshot.forEach((doc) => {
+        users.push({ name: doc.id, hs: doc.data().hs });
+      });
+      dispatch(fetch_users(users));
+    };
     getData();
-  }, [getData]);
+  }, []);
   users = users.sort((a, b) => b.hs - a.hs);
   if (loading) {
     return (

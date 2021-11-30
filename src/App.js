@@ -16,28 +16,29 @@ function App() {
   const dispatch = useDispatch();
   const toggle = useSelector((state) => state.toggle);
   const auth = getAuth();
-  const getData = async (name) => {
-    try {
-      const docRef = doc(db, "users", name);
-      const docSnap = await getDoc(docRef);
-      console.log(docSnap);
-      dispatch(
-        register({
-          name: name,
-          highscore: docSnap?.data()?.hs || 0,
-        })
-      );
-    } catch {
-      dispatch(
-        register({
-          name: name,
-          highscore: 0,
-        })
-      );
-    }
-  };
+  
 
   useEffect(() => {
+    const getData = async (name) => {
+      try {
+        const docRef = doc(db, "users", name);
+        const docSnap = await getDoc(docRef);
+        console.log(docSnap);
+        dispatch(
+          register({
+            name: name,
+            highscore: docSnap?.data()?.hs || 0,
+          })
+        );
+      } catch {
+        dispatch(
+          register({
+            name: name,
+            highscore: 0,
+          })
+        );
+      }
+    };
     onAuthStateChanged(auth, (user) => {
       if (user) {
         getData(user.displayName);
@@ -45,7 +46,7 @@ function App() {
         console.log("");
       }
     });
-  }, [getData, auth]);
+  }, [ auth]);
   return (
     <Paper
       className="App"
