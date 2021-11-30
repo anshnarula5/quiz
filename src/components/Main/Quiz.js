@@ -20,10 +20,23 @@ const Quiz = ({ data }) => {
   const [submit, setSubmit] = useState(false);
   const [score, setScore] = useState(0);
   const [correct, setCorrect] = useState(false);
+  
   const options = [...data[qNo].incorrect_answers, data[qNo].correct_answer];
-  function shuffle(array) {
-    array.sort(() => Math.random() - 0.5);
-  }
+  // const fake = data
+
+  // let zzz = fake.map(question => question.incorrect_answers)
+  // let yyy = []
+  // for (let i = 0;i < 11;i++){
+  //   yyy[i] = [...zzz[i], fake[i].correct_answer]
+  //   shuffle(yyy[i])
+  // }
+  // function shuffle(array) {
+  //   array.sort(() => Math.random() - 0.5);
+  // }
+ 
+  // console.log(yyy[qNo])
+  // const options = yyy[qNo]
+  
   const getHs = async (name) => {
     const docRef = doc(db, "users", name);
     const docSnap = await getDoc(docRef);
@@ -66,12 +79,12 @@ const Quiz = ({ data }) => {
     setAnswer("");
     setSubmit(false);
   };
-  
+ 
   return (
     <>
       {qNo !== 10 ? (
         <>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", px : 2 }}>
             <h3>Question {qNo + 1}</h3>
             <h3>Score : {score}</h3>
           </Box>
@@ -179,9 +192,9 @@ const Quiz = ({ data }) => {
             <Typography variant="h3" sx={{ my: 5 }}>
               Your Score : {score}
             </Typography>
-            <Button variant="outlined" sx={{ width: "10rem", p: 1, mx: 2 }}>
+            {/* <Button variant="outlined" sx={{ width: "10rem", p: 1, mx: 2 }}>
               Play again
-            </Button>
+            </Button> */}
           </Container>
         </>
       )}

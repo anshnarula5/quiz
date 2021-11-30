@@ -7,13 +7,12 @@ import { Grid } from "@mui/material";
 import { Container } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-
+import Theme from "../UI/Theme";
 import { Button, Typography } from "@mui/material"
-import { Navigate } from "react-router";
+// import { Navigate } from "react-router";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Theme from "../UI/Theme";
 
 const Main = () => {
   const color = useSelector(state => state.alert.payload)

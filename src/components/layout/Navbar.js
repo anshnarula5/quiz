@@ -14,6 +14,7 @@ import Theme from "../UI/Theme";
 import DarkModeToggle from "react-dark-mode-toggle";
 import PersonIcon from '@mui/icons-material/Person';
 import { set_toggle } from "../../redux/actions/toggle";
+import {Container} from "@mui/material";
 
 export default function Navbar() {
   const { user } = useSelector((state) => state.auth);
@@ -44,16 +45,16 @@ export default function Navbar() {
             </Button>
             {user ? (
               <>
-                <Button color="inherit" sx={{ mr: 5 }}>
+                <Button color="inherit" sx={{ mr: 1 }}>
                   <PersonIcon /> <Typography sx = {{ml : 1}}>{user.name}</Typography>
                 </Button>
-                <Button color="inherit" onClick={handleLogout} sx={{ mr: 5 }}>
+                <Button color="inherit" onClick={handleLogout} sx={{ mr: 1 }}>
                   Logout
                 </Button>
               </>
             ) : (
               <Link to="/login">
-                <Button color="inherit" sx={{ mr: 5 }}>
+                <Button color="inherit" sx={{ mr: 1 }}>
                   Register / Login
                 </Button>
               </Link>
