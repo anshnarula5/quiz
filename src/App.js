@@ -4,7 +4,7 @@ import Navbar from "./components/layout/Navbar";
 import Login from "./components/Main/Auth/Login";
 import Home from "./components/Main/Home";
 import Main from "./components/Main/Main";
-import { Alert, Paper, ThemeProvider, createTheme } from "@mui/material";
+import { Alert, Paper} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { register } from "./redux/actions/auth";
@@ -45,7 +45,7 @@ function App() {
         console.log("");
       }
     });
-  }, []);
+  }, [getData, auth]);
   return (
     <Paper
       className="App"

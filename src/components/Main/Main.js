@@ -24,7 +24,6 @@ const Main = () => {
       .then((data) => setQuizData(data));
   };
   useEffect(() => {
-    console.log(user)
     fetchData();
   }, []);
   

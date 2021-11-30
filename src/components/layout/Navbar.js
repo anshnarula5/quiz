@@ -14,7 +14,6 @@ import Theme from "../UI/Theme";
 import DarkModeToggle from "react-dark-mode-toggle";
 import PersonIcon from '@mui/icons-material/Person';
 import { set_toggle } from "../../redux/actions/toggle";
-import {Container} from "@mui/material";
 
 export default function Navbar() {
   const { user } = useSelector((state) => state.auth);

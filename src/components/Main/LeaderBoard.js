@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-import { db, getData } from "../../firebase-config";
+import { db } from "../../firebase-config";
 import { collection, getDocs } from "@firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { fetch_users } from "../../redux/actions/auth";
@@ -28,7 +28,7 @@ export default function LeaderBoard() {
   };
   React.useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
   users = users.sort((a, b) => b.hs - a.hs);
   if (loading) {
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Paper, TextField, Typography, Button } from "@mui/material";
 import validator from "validator";
@@ -10,7 +10,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { addUser, auth, updateHs} from "../../../firebase-config";
+import {  auth} from "../../../firebase-config";
 import { useDispatch } from "react-redux";
 import { setPopUp } from "../../../redux/actions/alert";
 import {register} from "../../../redux/actions/auth";

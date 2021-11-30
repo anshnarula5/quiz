@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { decode } from "html-entities";
 
-import { Button, Container, Grid, Paper, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import { setAlert } from "../../redux/actions/alert";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -14,12 +14,11 @@ const Quiz = ({ data }) => {
   const user = useSelector((state) => state.auth.user);
   const toggle = useSelector((state) => state.toggle);
   const dispatch = useDispatch();
-  const [question, setQuestion] = useState("");
   const [qNo, setQNo] = useState(0);
   const [answer, setAnswer] = useState("");
   const [submit, setSubmit] = useState(false);
   const [score, setScore] = useState(0);
-  const [correct, setCorrect] = useState(false);
+  const [, setCorrect] = useState(false);
   
   const options = [...data[qNo].incorrect_answers, data[qNo].correct_answer];
   // const fake = data
